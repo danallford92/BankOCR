@@ -1,19 +1,11 @@
-const parse = require('./index');
+const parseDigit = require('./index');
+const fs = require('fs')
 
-test('can parse the number 1', () => {
-    expect(parse("   \n  |\n  |\n")).toBe(1);
+describe('can parse numbers individually', () => {
+    for(let i = 0; i < 10; i++) {
+        it(`should be able to parse ${i}`, () => {
+            const text = fs.readFileSync(`./digits/${i}.txt`).toString();
+            expect(parseDigit(text)).toBe(i);
+        })
+    }
 });
-
-test('can parse the number 2', () => {
-    expect(parse("_\n _|\n |_\n")).toBe(2);
-});
-
-test('can parse the number 3', () => {
-    expect(parse(" _\n _|\n _|\n")).toBe(3);
-});
-
-test('can parse the number 4', () => {
-    expect(parse("   \n|_|\n  |\n")).toBe(4);
-});
-
-
