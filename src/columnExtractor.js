@@ -1,4 +1,4 @@
-const getNthDigit = (lines, n) => {
+const getNthColumn = (lines, n) => {
     let result = '';
     for (let row = 0; row < 3; row++) {
         result += `${lines[row].substring(3 * n, 3 * n + 3)}\n`
@@ -8,12 +8,12 @@ const getNthDigit = (lines, n) => {
 
 const range = n => [...new Array(n).keys()] 
 
-const toDigits = string => {
+const toColumns = string => {
     let lines = string.split("\n")
     let numChars = lines[0].length / 3
 
     return range(numChars)
-        .map((index) => getNthDigit(lines, index))
+        .map((index) => getNthColumn(lines, index))
 }
 
-module.exports = toDigits;
+module.exports = toColumns
