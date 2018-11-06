@@ -9,3 +9,8 @@ describe('can parse numbers individually', () => {
         })
     }
 })
+
+describe('replace illegible digits with ?', () => {
+    const text = fs.readFileSync(`./test_fixtures/digits/illegible.txt`).toString();
+    expect(parseDigit(text)).toBe('?');
+})

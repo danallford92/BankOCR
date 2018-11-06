@@ -14,3 +14,7 @@ it('can parse lots of accounts', () => {
     expect(accountNumbers).toHaveLength(1250)
     expect(accountNumbers[1249]).toEqual("012345678")
 })
+
+it('replaces illegible columns with ?', () => {
+    expect(parseFile('./test_fixtures/account-numbers/illegible.txt')).toEqual(["0123?5678"])
+})

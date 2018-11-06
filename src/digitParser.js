@@ -12,7 +12,7 @@ const DIGITS = {
 }
 
 function parseDigit(string) {
-    return DIGITS[string]
+    return DIGITS[string] || '?'
 }
 
 module.exports = parseDigit;
