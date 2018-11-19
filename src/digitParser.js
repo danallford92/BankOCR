@@ -1,3 +1,5 @@
+const isAlternative = require("./isAlternative");
+
 const DIGITS = {
     " _ \n| |\n|_|\n": '0',
     "   \n  |\n  |\n": '1',
@@ -11,8 +13,11 @@ const DIGITS = {
     " _ \n|_|\n _|\n": '9'
 }
 
-function parseDigit(string) {
-    return DIGITS[string] || '?'
-}
+const alternatives = string => 
+    Object.keys(DIGITS)
+        .filter(key => isAlternative(string, key))
+        .map(key => DIGITS[key]);
 
-module.exports = parseDigit;
+const parseDigit = string => ({ initialMatch: DIGITS[string], alternatives: alternatives(string) })
+
+module.exports = parseDigit

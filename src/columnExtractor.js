@@ -10,9 +10,9 @@ const range = n => [...new Array(n).keys()]
 
 const toColumns = string => {
     let lines = string.split("\n")
-    let numChars = lines[0].length / 3
+    let numColumns = lines[0].length / 3
 
-    return range(numChars)
+    return range(numColumns)
         .map((index) => getNthColumn(lines, index))
 }
 
