@@ -1,20 +1,27 @@
 const fs = require('fs')
-const parseFile = require('./fileParser')
+const { parseFile } = require('./fileParser')
 const checksum = require("./checksum")
 
-const rowStatus = num => {
-    if(num.includes("?")) {
-        return " ILL"
-    } else if (!checksum(num) == 0) {
-        return " ERR"
+const reportLine = ({ asRead, getPossibles }) => {
+    if (asRead.includes("?") || !hasValidChecksum(asRead)) {
+        const validPossibles = getPossibles().filter(hasValidChecksum);
+        if (validPossibles.length === 1) {
+            return validPossibles[0];            
+        }
+        if (validPossibles.length > 1) {
+            return `${asRead} AMB` ;            
+        }
+        return asRead + (asRead.includes("?") ? ' ILL' : " ERR")
     }
-    return ''
+    return asRead
 }
+
+const hasValidChecksum = s => checksum(s) === 0
 
 const report = (inputFile, outputFile) => {
     const accountNumbers = parseFile(inputFile)
-        .map(num => num + rowStatus(num))
+        .map(reportLine)
     fs.writeFileSync("./test_output/report.txt", accountNumbers.join('\n'))
 }
 
-module.exports = report
+module.exports = { report, reportLine }

@@ -38,5 +38,4 @@ describe('offer alternatives to legible digits', () => {
             expect(parseDigit(text)).toEqual({ initialMatch: `${n}`, alternatives });
         })
     })
-
 })
