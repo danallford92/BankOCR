@@ -25,8 +25,7 @@ const d = (initialMatch, alternatives = []) => ({ initialMatch: initialMatch && 
 
 describe("combine function", () => {
     test("returns the string itself if no other alternatives", () => {
-        expect(combine([d(1), d(2), d(3)], [''])).toEqual(["123"]);
-        expect(combine([d(1), d(2), d(3)])).toEqual(["123"]);
+        expect(combine([d(1), d(2), d(3)])).toEqual([]);
     });
 
     test("returns the possibilities of an illegible string", () => {
@@ -34,10 +33,18 @@ describe("combine function", () => {
     });
 
     test("returns the possibilities of a legible string", () => {
-        expect(combine([d(1), d(2, ["3", "4"]), d(3)])).toEqual(["123", "133", "143"]);
+        expect(combine([d(1), d(2, ["3", "4"]), d(3)])).toEqual(["133", "143"]);
+    });
+
+    test("returns the possibilities of a very legible string", () => {
+        expect(combine([d(1), d(2, ["3", "4"]), d(3, ["5", "6"])])).toEqual(["133", "143", "125", "126"]);
     });
 
     test("returns the possibilities of a very illegible string", () => {
-        expect(combine([d(1), d(undefined, ["3", "4"]), d(undefined, ["5", "6"])])).toEqual(["135", "136", "145", "146"]);
-    });    
+        expect(combine([d(1), d(undefined, ["3", "4"]), d(undefined, ["5", "6"])])).toEqual([]);
+    });
+
+    test("returns the possibilities of an extremely illegible string", () => {
+        expect(combine([d(1), d(undefined), d(3)])).toEqual([]);
+    });
 });

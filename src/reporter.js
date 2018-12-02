@@ -21,7 +21,7 @@ const hasValidChecksum = s => checksum(s) === 0
 const report = (inputFile, outputFile) => {
     const accountNumbers = parseFile(inputFile)
         .map(reportLine)
-    fs.writeFileSync("./test_output/report.txt", accountNumbers.join('\n'))
+    fs.writeFileSync(outputFile, accountNumbers.join('\n'))
 }
 
 module.exports = { report, reportLine }

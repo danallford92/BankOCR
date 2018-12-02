@@ -6,22 +6,40 @@ const parseRow = string => {
     const digits = toColumns(string).map(digitParser)
     return {
         asRead: digits
-            .map(({ initialMatch, alternatives }) => initialMatch || alternatives[0] || '?')
-            .join(''), 
+            .map(({ initialMatch, alternatives }) => initialMatch || '?')
+            .join(''),
         getPossibles: () => combine(digits)
     }
 }
 
-const combine = (digits, acc = [""]) => {
+const combine = (digits) => {
+    if (digits.filter(d => d.initialMatch === undefined).length > 1) {
+        return [];
+    }
+
+    if (digits.filter(d => d.initialMatch === undefined).length === 1) {
+        return replaceUndefined(digits)
+    }
+
+    return replaceOne(digits)
+}
+
+const replaceUndefined = (digits) => {
+    const x = digits.map(d => d.initialMatch);
+    const n = x.indexOf(undefined);
+    const prefix = x.slice(0, n).join('')
+    const suffix = x.slice(n + 1).join('')
+    return digits[n].alternatives.map(s => prefix + s + suffix);
+}
+
+const replaceOne = (digits, seen = "", acc = []) => {
     if (digits.length === 0) {
         return acc;
     }
-    
+
     const [{ initialMatch, alternatives }, ...rest] = digits
 
-    const allPossibleValues = initialMatch ? [initialMatch, ...alternatives] : alternatives
-
-    return combine(rest, flatMap(s => allPossibleValues.map(a => s.concat(a)), acc))
+    return replaceOne(rest, seen + initialMatch, [...acc.map(s => s + initialMatch), ...alternatives.map(s => seen + s)])
 }
 
 // {
